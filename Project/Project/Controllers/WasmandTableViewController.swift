@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import LocalAuthentication
+
 
 class WasmandTableViewController: UITableViewController {
     
@@ -53,9 +55,15 @@ class WasmandTableViewController: UITableViewController {
     
     
     @IBAction func editButtonTapped(_sender: UIBarButtonItem){
+        
         let tableVieweditingMode = tableView.isEditing
         tableView.setEditing(!tableVieweditingMode, animated: true)
     }
+    
+    
+    
+    
+    
     
     
     override func prepare(for segue: UIStoryboardSegue, sender:
@@ -91,7 +99,7 @@ class WasmandTableViewController: UITableViewController {
         Wasmand.saveToFile(wasmanden: wasmanden)
     }
     
-  
+    
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
         let movedWasmand = wasmanden.remove(at: fromIndexPath.row)
@@ -105,11 +113,47 @@ class WasmandTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
-        if editingStyle == .delete{
-            wasmanden.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: . automatic)
-             Wasmand.saveToFile(wasmanden: wasmanden)
+        
+        let myContext = LAContext()
+        let myLocalizedReasonString = "Bevestig om te verwijderen"
+        
+        var authError: NSError?
+        
+        // controle of fingerprint is beschikbaar voor aios versie.
+        if #available(iOS 8.0, macOS 10.12.1, *) {
+            // 2. Check if the device has a fingerprint sensor
+            if myContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {
+                myContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: myLocalizedReasonString) { success, evaluateError in
+                    DispatchQueue.main.async {
+                        if success {
+                            if editingStyle == .delete{
+                                self.wasmanden.remove(at: indexPath.row)
+                                tableView.deleteRows(at: [indexPath], with: . automatic)
+                                Wasmand.saveToFile(wasmanden: self.wasmanden)
+                            }
+                        } else {
+                            // User did not authenticate successfully, look at error and take appropriate action
+                            let alert = UIAlertController(title: "Geen succesvolle aanmelding", message: "Het is niet mogelijk om het element uit de lijst te verwijderen.", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                            self.present(alert, animated: true)
+                        }
+                    }
+                }
+            } else {
+                if editingStyle == .delete{
+                    self.wasmanden.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: . automatic)
+                    Wasmand.saveToFile(wasmanden: self.wasmanden)
+                }
+            }
+        } else {
+            if editingStyle == .delete{
+                self.wasmanden.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: . automatic)
+                Wasmand.saveToFile(wasmanden: self.wasmanden)
+            }
+            
         }
+        
     }
-    
 }

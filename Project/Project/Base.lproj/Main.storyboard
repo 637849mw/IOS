@@ -576,6 +576,19 @@
             </objects>
             <point key="canvasLocation" x="364" y="173"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="zJF-mM-dFK">
+            <objects>
+                <navigationController id="P1B-hq-BTy" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="chu-Wx-i3D">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WaB-Mw-fmD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="364" y="173"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Loto-Strijkatelier3" width="1084" height="481"/>
