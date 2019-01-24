@@ -1,11 +1,3 @@
-//
-//  WasmandTableViewController.swift
-//  Project
-//
-//  Created by Matthias Warnez on 15/11/2018.
-//  Copyright © 2018 Matthias Warnez. All rights reserved.
-//
-
 import UIKit
 import LocalAuthentication
 
@@ -18,6 +10,8 @@ class WasmandTableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44.0
+        
+        // ophalen van de data
         if let wasmanden = Wasmand.loadFromFile(){
             self.wasmanden = wasmanden
         }
@@ -53,18 +47,11 @@ class WasmandTableViewController: UITableViewController {
         return cell
     }
     
-    
+    // Bepalen of een de tableview mogelijk is voor te editeren.
     @IBAction func editButtonTapped(_sender: UIBarButtonItem){
-        
         let tableVieweditingMode = tableView.isEditing
         tableView.setEditing(!tableVieweditingMode, animated: true)
     }
-    
-    
-    
-    
-    
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender:
         Any?) {
@@ -76,9 +63,6 @@ class WasmandTableViewController: UITableViewController {
             addEditWasmandTableViewController.wasmand = wasmand
         }
     }
-    
-    
-    
     
     @IBAction func unwindToWasmandTableView(segue: UIStoryboardSegue)
     {
@@ -112,6 +96,8 @@ class WasmandTableViewController: UITableViewController {
         return .delete
     }
     
+    
+    // Methode die er voor dat je een cell kan verwijderen - Met fingerprint controle
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
         
         let myContext = LAContext()

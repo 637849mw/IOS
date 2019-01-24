@@ -1,26 +1,17 @@
-//
-//  addEditWasmandTableViewController.swift
-//  Project
-//
-//  Created by Matthias Warnez on 15/11/2018.
-//  Copyright © 2018 Matthias Warnez. All rights reserved.
-//
-
 import UIKit
 
+/// Klasse die er voor zorgt dat het mogelijk is voor het toevoegen van een item.
 class AddEditWasmandTableViewController: UITableViewController {
     
     var wasmand: Wasmand? = nil
     
+    /// Referenties naar items op de UI
     @IBOutlet weak var saveButton:UIBarButtonItem!
-    
-    
     @IBOutlet weak var aantalLabel:UITextField!
     @IBOutlet weak var datumbinnenDatepicker:UIDatePicker!
     @IBOutlet weak var datumOphalingLabel: UILabel!
-    
     @IBOutlet weak var vandaagLabel:UILabel!
-
+    
     
     
     override func viewDidLoad() {
@@ -33,7 +24,7 @@ class AddEditWasmandTableViewController: UITableViewController {
         vandaagLabel.text="Vandaag: " + geefDatumAlsString(datum: Date())
         
         
-        // indien het een aanpassing is
+        // indien het een aanpassing is-Edit
         if let wasmand = self.wasmand{
             aantalLabel.text = String(wasmand.aantalStuks)
             datumbinnenDatepicker.setDate(wasmand.datumBinnen, animated: true)
@@ -43,12 +34,12 @@ class AddEditWasmandTableViewController: UITableViewController {
         updateSaveButtonState()
     }
     
-    
+    // Methode die er voor zorgt dat als de tekst gewijzigd wordt in het label, dat save button beschikbaar wordt.
     @IBAction func textEditingChanged(_ sender: Any) {
         updateSaveButtonState()
     }
     
-    
+      // Methode die er voor zorgt dat als de datum gewijzigd wordt in het label, dat save button beschikbaar wordt.
     @IBAction func dateChanged2(_ sender: Any) {
         datumOphalingLabel.text = geefDatumAlsString(datum: berekenOphaaldatum(datum: datumbinnenDatepicker.date))
     }
@@ -70,6 +61,11 @@ class AddEditWasmandTableViewController: UITableViewController {
         
     }
     
+    
+    /// Bepalen van de juiste ophaal datum
+    ///
+    /// - Parameter datum: datum wanneer een wasmand is binnen gebracht.
+    /// - Returns: datum wanneer de wasmand terug mag op gehaald worden.
     private func berekenOphaaldatum(datum: Date) -> Date{
         let myCalendar = Calendar(identifier: .gregorian)
         let weekDay = myCalendar.component(.weekday, from: datum)
@@ -85,6 +81,11 @@ class AddEditWasmandTableViewController: UITableViewController {
         return ophaal
     }
     
+    
+    /// Het omzetten van een datum naar een string.
+    ///
+    /// - Parameter datum: datume Object
+    /// - Returns: een datum omgezet naar een string.
     private func geefDatumAlsString(datum: Date) -> String{
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"

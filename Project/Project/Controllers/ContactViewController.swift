@@ -4,6 +4,7 @@ import UIKit
 import MessageUI
 import MapKit
 
+/// Klasse die de contact gegevens controleert.
 class ContactViewController: UIViewController, MFMailComposeViewControllerDelegate {
     
     @IBOutlet weak var uiMail: UIImageView!
@@ -12,7 +13,7 @@ class ContactViewController: UIViewController, MFMailComposeViewControllerDelega
     @IBOutlet weak var lblOpening: UILabel!
     
     
-    
+    /// Bepalen van click eventents op images.
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,12 +28,10 @@ class ContactViewController: UIViewController, MFMailComposeViewControllerDelega
         
         
         calculateOpening()
-        
-        
     }
     
     
-    
+    /// Methode die uitgevoerd indien er geklikt wordt op een mail-icon
     @objc func mailTapped(){
         //email conny
         let toRecipients = ["Strijkatelier@gmail.com.com"]
@@ -46,12 +45,12 @@ class ContactViewController: UIViewController, MFMailComposeViewControllerDelega
         self.present(mc,animated: true,completion:nil)
     }
     
+     /// Methode die uitgevoerd indien er geklikt wordt op een mail-icon
     @objc func phoneTapped(){
-        
         guard let number = URL(string: "tel://051625636." ) else { return }
         UIApplication.shared.open(number)
     }
-    
+     /// Methode die uitgevoerd indien er geklikt wordt op een map-icon
     @objc func mapTapped(){
         
         //Defining destination
@@ -116,12 +115,7 @@ class ContactViewController: UIViewController, MFMailComposeViewControllerDelega
                 }
                 
             }
-
             
         }
-        
     }
-    
-    
-    
 }
